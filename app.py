@@ -1,4 +1,10 @@
 import sys
+import logging
+
+DEBUG =True
+# Set up logging
+logging.basicConfig(filename='search.log', level=logging.DEBUG, 
+                    format='%(asctime)s %(levelname)s:%(message)s')
 
 class TextFileSearcher:
     def __init__(self, file_name, search_string, case_sensitive=False):
@@ -33,6 +39,9 @@ class CommandLineInterface:
 
     def parse_arguments(self):
         args = sys.argv[1:]
+        if len(args) ==0: 
+            self.print_usage()
+            exit()
 
         if '--help' in args:
             self.print_usage()
@@ -59,6 +68,7 @@ class CommandLineInterface:
         print("Options:")
         print("  --help        Show this help message and exit")
         print("  --case        Perform a case-sensitive search")
+        print("  --docs        Perform a case-sensitive search")
 
     def print_results(self, results):
         if results:
@@ -92,5 +102,7 @@ class CommandLineInterface:
             self.print_results(results)
             
 if __name__ == "__main__":
+    if DEBUG:  logging.info("Program started.")
     cli = CommandLineInterface()
     cli.run()
+    if DEBUG: logging.info("Program finished.")
