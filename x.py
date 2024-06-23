@@ -1,24 +1,40 @@
-# Python Program illustrate how 
-# to overload an binary + operator
-# And how it actually works
+import threading
+import time
 
-class A:
-	def __init__(self, a):
-		self.a = a
+# Function that simulates a long-running task
+def long_running_task():
+    start_time = time.time()
 
-	# adding two objects 
-	def __add__(self, o):
-		return self.a + o.a 
-ob1 = A(1)
-ob2 = A(2)
-ob3 = A("Geeks")
-ob4 = A("For")
+    print("Long-running task started")
 
-print(ob1 + ob2)
-print(ob3 + ob4)
-# Actual working when Binary Operator is used.
-print(A.__add__(ob1 , ob2)) 
-print(A.__add__(ob3,ob4)) 
-#And can also be Understand as :
-print(ob1.__add__(ob2))
-print(ob3.__add__(ob4))
+    count = 0
+    for _ in range(10**8):  # Simulate a task that takes time to complete
+        count += 1
+    print("Long-running task completed")
+    print("--- %s seconds ---" % (time.time() - start_time))
+# Function that simulates a shorter task
+def short_task():
+    print("Short task started")
+    count = 0
+    for _ in range(10**6):  # Simulate a task that takes less time to complete
+        count += 1
+    print("Short task completed")
+
+# Main function to run threads
+def main():
+    # Creating threads
+    thread1 = threading.Thread(target=long_running_task)
+    thread2 = threading.Thread(target=short_task)
+
+    # Starting threads
+    thread1.start()
+    thread2.start()
+
+    # Wait for both threads to complete
+    thread1.join()
+    thread2.join()
+
+    print("Both threads have completed")
+
+if __name__ == "__main__":
+    main()
