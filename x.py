@@ -34,7 +34,8 @@ def main():
     thread1.join()
     thread2.join()
 
-    print("Both threads have completed")
+
 
 if __name__ == "__main__":
     main()
+pass
